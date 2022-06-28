@@ -77,12 +77,29 @@
 					urls:this.goodsInfo.pics?this.goodsInfo.pics.map(pics=>pics.pics_big):[]
 				})
 			},
+			// 点击'商店'或'购物车'
 			onClick(e){
 				if(e.content.text=='购物车'){
 					uni.switchTab({
 						url:'/pages/cart/cart'
 					})
 				}
+			},
+			// 点击'加入购物车'或'立即购买'
+			buttonClick(e){
+				if(e.content.text=='加入购物车'){
+					// 整理商品信息
+					let goods={
+						goods_id:this.goodsInfo.goods_id,
+						goods_name:this.goodsInfo.goods_name,
+						goods_price:this.goodsInfo.goods_price,
+						goods_count:1,
+						goods_small_logo:this.goodsInfo.goods_small_logo,
+						goods_state:true
+					}
+					this.$store.commit('cart/addToCart',goods)
+				}
+				// addToCart
 			}
 		}
 	}
