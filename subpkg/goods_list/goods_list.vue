@@ -1,20 +1,8 @@
 <template>
 	<view class="goodslistContainer">
-		<block v-for="(goods,index) in goodslist" :key="index">
-			<view class="goodsItem">
-				<!-- 左侧图片 -->
-				<view class="img">
-					<image :src="goods.goods_small_logo || defaultPic" mode=""></image>
-				</view>
-				<!-- 右侧内容 -->
-				<view class="content">
-					<!-- 标题 -->
-					<view class="title">{{goods.goods_name}}</view>
-					<!-- 价格 -->
-					<view class="price">￥ {{goods.goods_price}}</view>
-				</view>
-			</view>
-		</block>
+		<view v-for="(goods,index) in goodslist" :key="index" @click="gotoGoodsDeatil(goods)">
+			<my-goods :goods="goods"></my-goods>
+		</view>
 	</view>
 </template>
 
@@ -31,9 +19,10 @@
 				},
 				// 总页数
 				total:0,
+				// 商品列表
 				goodslist:[],
-				// 默认商品图片
-				defaultPic:'https://img3.doubanio.com/f/movie/8dd0c794499fe925ae2ae89ee30cd225750457b4/pics/movie/celebrity-default-medium.png'
+				// 节流阀
+				isloading:false
 			};
 		},
 		onLoad(options) {
@@ -43,40 +32,50 @@
 		},
 		methods:{
 			// 获取商品列表
-			async getGoodslist(){
+			async getGoodslist(closePullDown){
+				// 关闭节流阀
+				this.isloading=true
 				let {data:res}=await uni.$http.get('/api/public/v1/goods/search',this.queryObj)
 				if(res.meta.status!==200) return uni.$showMsg()
+				// 新旧数据合并
 				this.total=res.message.total
-				this.goodslist=res.message.goods
+				this.goodslist=[...this.goodslist,...res.message.goods]
+				// 关闭下来刷新
+				closePullDown&&closePullDown()
+				// 打开节流阀
+				this.isloading=false
+			},
+			// 跳转至商品详情页
+			gotoGoodsDeatil(goods){
+				uni.navigateTo({
+					url:'/subpkg/goods_detail/goods_detail?goods_id='+goods.goods_id
+				})
 			}
+		},
+		// 触底加载
+		onReachBottom() {
+			// 节流请求
+			if(this.isloading) return
+			// 页码加一，先判断
+			if(this.queryObj.pagenum*this.queryObj.pagesize>=this.total) return uni.$showMsg('已无再多商品信息')
+			this.queryObj.pagenum++
+			console.log(this.queryObj.pagenum);
+			// 再次请求数据
+			this.getGoodslist()
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			// 重置关键数据
+			this.queryObj.pagenum=1
+			this.total=0
+			this.goodslist=[]
+			this.isloading=false
+			// 重新发请求(关闭下拉刷新)
+			this.getGoodslist(()=>uni.stopPullDownRefresh())
 		}
 	}
 </script>
 
 <style lang="scss">
-.goodsItem{
-	display: flex;
-	padding: 10px 5px;
-	border-bottom: 1px solid #f0f0f0;
-	.img {
-		margin-right: 5px;
-		image{
-			width: 100px;
-			height: 100px;
-			display: block;
-		}
-	}
-	.content{
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		.title{
-			font-size: 13px;
-		}
-		.price{
-			font-size: 16px;
-			color: #c00000;
-		}
-	}
-}
+
 </style>

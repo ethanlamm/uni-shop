@@ -18,7 +18,7 @@
 		<view class="historyContainer" v-else>
 			<view class="title">
 				<text>搜索历史</text>
-				<uni-icons type="trash-filled" size="17" @click="clearHistory"></uni-icons>
+				<uni-icons type="trash" size="17" @click="clearHistory"></uni-icons>
 			</view>
 			<view class="list">
 				<uni-tag :text="history" v-for="(history,index) in historylist" :key="index" @click="gotoGoodsList(history)"></uni-tag>
