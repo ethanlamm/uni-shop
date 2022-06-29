@@ -42,7 +42,7 @@
 			};
 		},
 		onLoad() {
-			this.historylist=JSON.parse(uni.getStorageSync('history')) || []
+			this.historylist=JSON.parse(uni.getStorageSync('history')|| '[]') 
 		},
 		methods: {
 			// 获取搜索建议列表

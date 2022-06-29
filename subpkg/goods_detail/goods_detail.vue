@@ -31,11 +31,27 @@
 </template>
 
 <script>
+	import {mapGetters} from 'vuex'
 	export default {
+		computed:{
+			...mapGetters('cart',['totalCount'])
+		},
+		watch:{
+			// 修改购物车商品数量
+			totalCount:{
+				immediate: true,
+				handler(newValue){
+					let findResult=this.options.find(option=>option.text=='购物车')
+					if(findResult){
+						findResult.info=newValue
+					}
+				}
+			}
+		},
 		data() {
 			return {
 				goodsInfo:{},
-				 options: [{
+				options: [{
 							icon: 'shop',
 							text: '店铺',
 							infoBackgroundColor:'#007aff',
@@ -43,9 +59,9 @@
 						}, {
 							icon: 'cart',
 							text: '购物车',
-							info: 2
+							info: 0
 						}],
-					    buttonGroup: [{
+				buttonGroup: [{
 					      text: '加入购物车',
 					      backgroundColor: '#ff0000',
 					      color: '#fff'
@@ -99,7 +115,6 @@
 					}
 					this.$store.commit('cart/addToCart',goods)
 				}
-				// addToCart
 			}
 		}
 	}

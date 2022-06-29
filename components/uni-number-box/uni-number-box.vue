@@ -56,7 +56,9 @@
 				this.inputValue = +val;
 			},
 			inputValue(newVal, oldVal) {
-				if (+newVal !== +oldVal) {
+				// 修改:是数字,以及不包含小数点
+				// if(+newVal !== +oldVal){
+				if (+newVal !== +oldVal && Number(newVal) && String(newVal).indexOf('.') === -1) {
 					this.$emit("change", newVal);
 				}
 			}
@@ -101,9 +103,14 @@
 				return scale;
 			},
 			_onBlur(event) {
-				let value = event.detail.value;
+				// 修改
+				// 将用户输入的内容转化为整数
+				let value = parseInt(event.detail.value)
 				if (!value) {
+					// 修改
 					// this.inputValue = 0;
+					// 如果转化之后的结果为 NaN，则给定默认值为 1
+					this.inputValue = 1;
 					return;
 				}
 				value = +value;

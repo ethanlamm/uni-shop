@@ -122,6 +122,7 @@
 			/**
 			 * 按钮内容
 			 */
+			// 官网文档更新，options改为right-options
 			options: {
 				type: Array,
 				default () {
