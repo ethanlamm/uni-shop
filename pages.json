@@ -41,7 +41,7 @@
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "黑马优购",
+		"navigationBarTitleText": "uni-shop",
 		"navigationBarBackgroundColor": "#c00000",
 		"backgroundColor": "#FFFFFF"
 	},

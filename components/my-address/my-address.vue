@@ -1,7 +1,7 @@
 <template>
 	<view class="addressContainer">
 		<!-- 按钮 -->
-		<view class="addressChoose" v-if="JSON.stringify(address)=='{}'">
+		<view class="addressChoose" v-if="!isAddressExist">
 			 <button type="primary" size="mini" @click="chooseAddress">请选择收货地址+</button>
 		</view>
 		
@@ -28,12 +28,27 @@
 	import {mapState,mapGetters} from 'vuex'
 	export default {
 		computed:{
-			...mapState('address',['address']),
-			...mapGetters('address',['addr'])
+			...mapState('userInfo',['address']),
+			...mapGetters('userInfo',['addr'])
+		},
+		watch:{
+			address:{
+				immediate:true,
+				handler(newValue){
+					if(JSON.stringify(newValue)=='{}'){
+						// 地址不存在,显示按钮
+						this.isAddressExist=false
+					}else{
+						// 地址存在,显示地址
+						this.isAddressExist=true
+					}
+				}
+			}
 		},
 		data() {
 			return {
-
+				// 默认不存在
+				isAddressExist:false
 			};
 		},
 		methods:{
@@ -43,7 +58,7 @@
 				// console.log(succ);
 				if(err==null && succ.errMsg=='chooseAddress:ok'){
 					// address不在这里存储到本地,而是放到vuex中再存储到本地,因为my组件也要用到address--地址的管理
-					this.$store.commit('address/updateAddress',succ)
+					this.$store.commit('userInfo/updateAddress',succ)
 				}
 			},
 		}

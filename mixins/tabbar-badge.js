@@ -5,19 +5,32 @@ export default {
 		...mapGetters('cart',['totalCount'])
 	},
 	watch:{
-		// totalCount改变,再次调用setTabbarBadge函数
-		totalCount(){
-			this.setTabbarBadge()
+		totalCount:{
+			immediate:true,
+			handler(){
+				this.setTabbarBadge()
+			}
 		}
 	},
 	onLoad(){
 		this.setTabbarBadge()
 	},
+	// 再次进入
+	onShow() {
+		this.setTabbarBadge()
+	},
 	methods:{
 		setTabbarBadge(){
+			// 当购物车中商品数量为0时,去除徽标
+			if(this.totalCount==0){
+				uni.removeTabBarBadge({
+					index:2
+				})
+				return
+			}
 			uni.setTabBarBadge({
 				index:2,
-				text:this.totalCount.toString()
+				text:this.totalCount.toString()  // 字符串类型
 			})
 		}
 	}

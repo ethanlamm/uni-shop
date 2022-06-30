@@ -3,14 +3,14 @@
 	<!-- 公共组件 -->
 	<view class="goodsItem">
 		<!-- 左侧图片 -->
-		<view class="img">
+		<view class="pic">
 			<radio :checked="goods.goods_state" color="#C00000" v-if="showRadio" @click="radioClick"></radio>
-			<image :src="goods.goods_small_logo || defaultPic" mode=""></image>
+			<image :src="goods.goods_small_logo || defaultPic" mode="" @click="onClick" class="img"></image>
 		</view>
 		<!-- 右侧内容 -->
 		<view class="content">
 			<!-- 标题 -->
-			<view class="title">{{goods.goods_name}}</view>
+			<view class="title" @click="onClick">{{goods.goods_name}}</view>
 			<!-- 价格和数量 -->
 			<view class="priceAndNum">
 				<view class="price">￥ {{goods.goods_price | toFix}}</view>
@@ -57,6 +57,10 @@
 			// numBox数值改变
 			changeHandler(value){
 				this.$emit('numChange',{id:this.goods.goods_id,num:value})
+			},
+			// 点击图片和标题-跳转至详情页
+			onClick(){
+				this.$emit('gotoDetail',this.goods)
 			}
 		},
 		
@@ -68,13 +72,13 @@
 	display: flex;
 	padding: 10px 5px;
 	border-bottom: 1px solid #f0f0f0;
-	.img {
+	.pic {
 		margin-right: 5px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		
-		image{
+		.img{
 			width: 100px;
 			height: 100px;
 			display: block;

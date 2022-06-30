@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="cartContainer" v-if="cart.length!=0">
 		<!-- 地址 -->
 		<my-address></my-address>
 		
@@ -14,10 +14,19 @@
 		<uni-swipe-action>
 			<block v-for="(goods,index) in cart" :key="index">
 				<uni-swipe-action-item :options="options" @click="onClick(goods)">
-					<my-goods :goods="goods" :showRadio="true" :showNumBox="true" @radioChange="radioChangeHandler" @numChange="numChangeHandler"></my-goods>
+					<my-goods :goods="goods" :showRadio="true" :showNumBox="true" @radioChange="radioChangeHandler" @numChange="numChangeHandler" @gotoDetail="gotoGoodsDeatil"></my-goods>
 				</uni-swipe-action-item>
 			</block>
 		</uni-swipe-action>
+		
+		<!-- 结算 -->
+		<my-settle @allCheckedChange="allCheckedChangeHandler"></my-settle>
+	</view>
+	
+	<!-- 购物车空了 -->
+	<view class="emptyCart" v-else>
+		<image src="../../static/emptyCart.png" mode="" class="emptyImg"></image>
+		<text class="text">空空如也~~</text>
 	</view>
 </template>
 
@@ -56,21 +65,54 @@
 			// 删除商品
 			onClick(goods){
 				this.$store.commit('cart/deleteGoods',goods.goods_id)
+			},
+			// 在购物车点击图片或标题时跳转至商品详情页
+			gotoGoodsDeatil(goods){
+				uni.navigateTo({
+					url:'/subpkg/goods_detail/goods_detail?goods_id='+goods.goods_id
+				})
+			},
+			// 全选状态改变
+			allCheckedChangeHandler(isAllChecked){
+				this.$store.commit('cart/updateAllGoodsState',isAllChecked)
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-.cartTile {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  padding-left: 5px;
-  border-bottom: 1px solid #efefef;
-  .text {
-    margin-left: 10px;
-  }
+.cartContainer{
+	padding-bottom: 51px;
+	
+	.cartTile {
+	  height: 40px;
+	  display: flex;
+	  align-items: center;
+	  font-size: 14px;
+	  padding-left: 5px;
+	  border-bottom: 1px solid #efefef;
+	  .text {
+	    margin-left: 10px;
+	  }
+	}
+}
+
+.emptyCart{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 150px;
+	
+	.emptyImg{
+		width: 100px;
+		height: 100px;
+	}
+	
+	.text{
+		margin-top: 15px;
+		color: gray;
+		font-size: 14px;
+		font-weight: bold;
+	}
 }
 </style>

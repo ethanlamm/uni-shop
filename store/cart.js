@@ -25,7 +25,7 @@ export default {
 		saveCart({cart}){
 			uni.setStorageSync('cart',JSON.stringify(cart))
 		},
-		// 更新商品选中状态
+		// 更新商品选中状态(单个)
 		updateGoodsState({cart},goods_id){
 			let findResult=cart.find(item=>item.goods_id==goods_id)
 			if(findResult){
@@ -33,6 +33,12 @@ export default {
 				// 再存储
 				this.commit('cart/saveCart')
 			}
+		},
+		// 更新商品选中状态(所有)
+		updateAllGoodsState(state,newState){
+			state.cart.forEach(item=>item.goods_state=newState)
+			// 再存储
+			this.commit('cart/saveCart')
 		},
 		// 更新商品数量
 		updateGoodsNum({cart},{id,num}){
@@ -57,15 +63,38 @@ export default {
 		// 因为totalCount是依赖cart计算出来的,每次刷新(重新进入小程序),cart重置,totalCount也会重置,并不能实现totalCount持久存储的效果
 		// 所以,将源头cart本地存储才是正确的
 		
-		totalCount({cart}){
+		// 修改---代表商品种类的数量，不是所有商品的数量
+		totalCount(state){
+			return state.cart.length
+			// let sum=0
+			// cart.forEach(item=>{
+			// 	if(item.goods_state){
+			// 		// 只计算选中状态的商品
+			// 		sum+=item.goods_count
+			// 	}
+			// })
+			// return sum
+		},
+		
+		// 已勾选的所有商品的总数
+		checkedCount(state){
+			return state.cart.filter(item=>item.goods_state==true).reduce((sum,Item)=>sum+=Item.goods_count,0)
+		},
+		
+		// 全选的勾选状态
+		isAllChecked(state){
+			return state.cart.some(item=>item.goods_state==false)
+		},
+		
+		// 已勾选商品的总价格
+		checkedGoodsAmount(state){
 			let sum=0
-			cart.forEach(item=>{
+			state.cart.forEach(item=>{
 				if(item.goods_state){
-					// 只计算选中状态的商品
-					sum+=item.goods_count
+					sum+=item.goods_price*item.goods_count
 				}
 			})
-			return sum
+			return sum.toFixed(2)
 		}
 	}
 }
