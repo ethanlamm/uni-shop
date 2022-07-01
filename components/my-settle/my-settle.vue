@@ -54,8 +54,8 @@
 				// 1.创建订单（订单金额、收货地址、订单中包含的商品信息）--返回 订单编号
 				// 1.1整理请求参数
 				let orderInfo={
-					// order_price:this.checkedGoodsAmount    // 订单总价格
-					order_price:0.001,
+					// order_price:0.001,   // 开发时，可用此总价格
+					order_price:this.checkedGoodsAmount,    // 订单总价格
 					consignee_addr:this.addr,
 					goods:this.cart.filter(item=>item.goods_state).map(item=>({
 						goods_id:item.goods_id,

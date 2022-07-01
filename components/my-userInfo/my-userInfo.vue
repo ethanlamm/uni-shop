@@ -34,19 +34,19 @@
 				<view class="paneltitle">我的订单</view>
 				<view class="panelBody">
 					<view class="item">
-						<image src="/static/order_icons/待付款.png" class="icons"></image>
+						<image src="/static/order_icons/topay.png" class="icons"></image>
 						<text>待付款</text>
 					</view>
 					<view class="item">
-						<image src="/static/order_icons/待收货.png" class="icons"></image>
+						<image src="/static/order_icons/toreceive.png" class="icons"></image>
 						<text>待收货</text>
 					</view>
 					<view class="item">
-						<image src="/static/order_icons/退款.png" class="icons"></image>
+						<image src="/static/order_icons/refund.png" class="icons"></image>
 						<text>退款/退货</text>
 					</view>
 					<view class="item">
-						<image src="/static/order_icons/全部订单.png" class="icons"></image>
+						<image src="/static/order_icons/orderlist.png" class="icons"></image>
 						<text>全部订单</text>
 					</view>
 				</view>
