@@ -2,7 +2,7 @@
 	<view class="searchContainer" :style="{backgroundColor:bgcolor}">
 		<view class="search" :style="{borderRadius: radius+'px'}">
 			 <icon type="search" size="18"/>
-			 <text>搜索</text>
+			 <text class="text">搜索</text>
 		</view>
 	</view>
 </template>
@@ -44,7 +44,7 @@
 		height: 36px;
 		background-color: #ffffff;
 		
-		text{
+		.text{
 			font-size: 15px;
 			margin-left: 5px;
 		}

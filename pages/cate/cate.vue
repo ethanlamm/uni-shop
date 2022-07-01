@@ -19,8 +19,8 @@
 					<!-- 三级分类 -->
 					<view class="catelv3">
 						<view class="lv3Item" v-for="(lv3,index) in lv2.children" :key="lv3.cat_id" @click="gotoGoodslist(lv3)">
-							<image :src="lv3.cat_icon"></image>
-							<text>{{lv3.cat_name}}</text>
+							<image :src="lv3.cat_icon" class="img"></image>
+							<text class="text">{{lv3.cat_name}}</text>
 						</view>
 					</view>
 				</view>
@@ -151,12 +151,12 @@
 					width: 33.33%;
 					margin-bottom: 10px;
 					
-					image{
+					.img{
 						width: 60px;
 						height: 60px;
 					}
 					
-					text{
+					.text{
 						font-size: 12px;
 					}
 				}

@@ -1,9 +1,9 @@
 <template>
 	<view v-if="goodsInfo.goods_name" class="goodsDetailContainer">
 		<!-- 轮播图 -->
-		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true">
+		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true" class="swiper">
 			<swiper-item v-for="(img,index) in goodsInfo.pics" :key="index">
-				<image :src="img.pics_big" @click="preview(index)"></image>
+				<image :src="img.pics_big" @click="preview(index)" class="image"></image>
 			</swiper-item>
 		</swiper>
 		
@@ -125,10 +125,10 @@
 	padding-bottom: 50px;
 	
 	// 轮播图
-	swiper{
+	.swiper{
 		height: 750rpx;
 		
-		image{
+		.image{
 			width: 100%;
 			height: 100%;
 		}
